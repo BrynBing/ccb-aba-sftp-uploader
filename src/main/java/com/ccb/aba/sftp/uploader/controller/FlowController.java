@@ -30,17 +30,22 @@ public class FlowController {
 //            System.exit(1);
 //        }
 //
-//        // 2. Scan .aba files in date range
-//        List<File> allCandidates = originalFileScanner.findAbaFilesWithinRange(startDate, endDate);
-//        if (allCandidates.isEmpty()) {
-//            System.out.println("[INFO] No ABA files found in time range.");
-//            return;
-//        }
+        // 2. Scan .aba files in date range
+        List<File> allCandidates = originalFileScanner.findAbaFilesWithinRange(startDate, endDate);
+        if (allCandidates.isEmpty()) {
+            System.out.println("[INFO] No ABA files found in time range.");
+            return;
+        } else {
+            System.out.println("[INFO] The following ABA files were found in the specified time range:");
+            for (File file : allCandidates) {
+                System.out.println("    - " + file.getAbsolutePath());
+            }
+        }
 //
 //        // 3. Filter the files already exist in OUT\Processed\
 //        List<File> filesToUpload = fileFilter.filterUnprocessedFiles(allCandidates);
 //        if (filesToUpload.isEmpty()) {
-//            System.out.println("[INFO] All ABA files have already been processed.");
+//            System.out.println("[INFO] No ABA files need to be processed.");
 //            return;
 //        }
 //

@@ -18,6 +18,8 @@ public class Main {
             endDate = DateUtil.parseDate(args[1]);
         } else {
             System.out.println("Usage: STARTDATE<yyyymmdd> ENDDATE<yyyymmdd>");
+            System.exit(1);
+            return;
         }
 
         FlowController flowController = new FlowController();
