@@ -7,8 +7,6 @@ import java.time.format.ResolverStyle;
 public final class DateUtil {
     private static final DateTimeFormatter YYYYMMDD_STRICT = DateTimeFormatter.ofPattern("uuuuMMdd").withResolverStyle(ResolverStyle.STRICT);
 
-
-
     private DateUtil() {}
 
     public static ZoneId zone() {
@@ -21,9 +19,12 @@ public final class DateUtil {
 
     public static ZonedDateTime endBoundary(LocalDate endDate) {
         ZoneId z = zone();
+        LocalDate today = LocalDate.now(z);
+        if (!endDate.isEqual(today)) {
+            return endDate.atTime(23, 59, 59).atZone(z);
+        }
         LocalTime now = LocalTime.now(z);
-        LocalTime endMinute = LocalTime.of(now.getHour(), now.getMinute(), 0);
-        return endDate.atTime(endMinute).atZone(z);
+        return endDate.atTime(now.getHour(), now.getMinute(), 0).atZone(z);
     }
 
     public static boolean isInDateRange(Instant fileInstant,
