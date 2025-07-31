@@ -35,22 +35,25 @@ public class FlowController {
         if (allCandidates.isEmpty()) {
             System.out.println("[INFO] No ABA files found in time range.");
             return;
-        } else {
-            System.out.println("[INFO] The following ABA files were found in the specified time range:");
-            for (File file : allCandidates) {
-                System.out.println("    - " + file.getAbsolutePath());
-            }
         }
-//
-//        // 3. Filter the files already exist in OUT\Processed\
-//        List<File> filesToUpload = fileFilter.filterUnprocessedFiles(allCandidates);
-//        if (filesToUpload.isEmpty()) {
-//            System.out.println("[INFO] No ABA files need to be processed.");
-//            return;
-//        }
-//
-//        System.out.println("[INFO] " + filesToUpload.size() + " ABA files to upload.");
-//
+
+        System.out.println("[INFO] The following ABA files were found in the specified time range:");
+        for (File file : allCandidates) {
+            System.out.println("    - " + file.getName());
+        }
+
+        // 3. Filter the files already exist in OUT\Processed\
+        List<File> filesToUpload = fileFilter.filterUnprocessedFiles(allCandidates);
+        if (filesToUpload.isEmpty()) {
+            System.out.println("[INFO] No ABA files need to be processed.");
+            return;
+        }
+
+        System.out.println("[INFO] ABA files to upload:");
+        for (File file : filesToUpload) {
+            System.out.println("    - " + file.getName());
+        }
+
 //        int success = 0;
 //        int failed = 0;
 //
