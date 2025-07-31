@@ -29,9 +29,6 @@ public class ConfigLoader {
     public String getSageDir() {
         return getRequired("path.sage");
     }
-    public String getOutDir() {
-        return getRequired("path.out");
-    }
     public String getProcessedDir() {
         return getRequired("path.processed");
     }

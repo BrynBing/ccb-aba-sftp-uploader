@@ -74,5 +74,14 @@ public class FlowController {
 //
 //        // 5. Print final message
 //        System.out.println("[INFO] Transfer complete. Success: " + success + ", Failed: " + failed);
+//        for (File file : filesToUpload) {
+//            System.out.println("[INFO] Uploading: " + file.getName());
+//
+//            boolean uploaded = true;
+//            if (uploaded) {
+//                fileArchiver.archive(file);
+//                System.out.println("[INFO] Uploaded and archived: " + file.getName());
+//            }
+//        }
     }
 }
