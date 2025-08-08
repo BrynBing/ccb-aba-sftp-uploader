@@ -3,12 +3,13 @@ package com.ccb.aba.sftp.uploader;
 import com.ccb.aba.sftp.uploader.controller.FlowController;
 import com.ccb.aba.sftp.uploader.utils.DateUtil;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class Main {
-    public static void main(String[] args) {
-        LocalDate startDate = null;
-        LocalDate endDate = null;
+    public static void main(String[] args) throws IOException {
+        LocalDate startDate;
+        LocalDate endDate;
 
         if (args.length == 0) {
             startDate = LocalDate.now();

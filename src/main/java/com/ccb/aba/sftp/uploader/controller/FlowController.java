@@ -3,23 +3,24 @@ package com.ccb.aba.sftp.uploader.controller;
 import com.ccb.aba.sftp.uploader.service.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 public class FlowController {
     private final OriginalFileScanner originalFileScanner;
     private final FileFilter fileFilter;
-    private final SftpUploader sftpUploader;
+    private final Uploader sftpUploader;
     private final FileArchiver fileArchiver;
 
     public FlowController() {
         this.originalFileScanner = new OriginalFileScanner();
         this.fileFilter = new FileFilter();
-        this.sftpUploader = new SftpUploader();
+        this.sftpUploader = new StubSftpUploader();
         this.fileArchiver = new FileArchiver();
     }
 
-    public void execute(LocalDate startDate, LocalDate endDate) {
+    public void execute(LocalDate startDate, LocalDate endDate) throws IOException {
         System.out.println("[INFO] Transfer process started.");
 
         // 1. Scan .aba files in date range
@@ -46,31 +47,26 @@ public class FlowController {
             System.out.println("    - " + file.getName());
         }
 
-//        int success = 0;
-//        int failed = 0;
-//
-//        // 3. Upload + Archive
-//        for (File file : filesToUpload) {
-//            System.out.println("[INFO] Uploading: " + file.getName());
-//
-//            boolean uploaded = sftpUploader.upload(file);
-//            if (uploaded) {
-//                fileArchiver.archive(file);
-//                System.out.println("[INFO] Uploaded and archived: " + file.getName());
-//                success++;
-//            } else {
-//                System.err.println("[ERROR] Upload failed: " + file.getName());
-//                failed++;
-//            }
-//        }
+        int success = 0;
+        int failed = 0;
+
+        // 3. Upload + Archive
         for (File file : filesToUpload) {
             System.out.println("[INFO] Uploading: " + file.getName());
-            fileArchiver.archive(file);
-            System.out.println("[INFO] Uploaded and archived: " + file.getName());
+
+            boolean uploaded = sftpUploader.upload(file);
+            if (uploaded) {
+                fileArchiver.archive(file);
+                System.out.println("[INFO] Uploaded and archived: " + file.getName());
+                success++;
+            } else {
+                System.err.println("[ERROR] Upload failed: " + file.getName());
+                failed++;
+            }
         }
-//
-//        // 4. Print final message
-//        System.out.println("[INFO] Transfer complete. Success: " + success + ", Failed: " + failed);
+
+        // 4. Print final message
+        System.out.println("[INFO] Transfer complete. Success: " + success + ", Failed: " + failed);
 
     }
 }
