@@ -16,7 +16,7 @@ public class FlowController {
     public FlowController() {
         this.originalFileScanner = new OriginalFileScanner();
         this.fileFilter = new FileFilter();
-        this.sftpUploader = new StubSftpUploader();
+        this.sftpUploader = new JschSftpUploader();
         this.fileArchiver = new FileArchiver();
     }
 
@@ -51,17 +51,26 @@ public class FlowController {
         int failed = 0;
 
         // 3. Upload + Archive
-        for (File file : filesToUpload) {
-            System.out.println("[INFO] Uploading: " + file.getName());
+        try {
+            for (File file : filesToUpload) {
+                System.out.println("[INFO] Uploading: " + file.getName());
 
-            boolean uploaded = sftpUploader.upload(file);
-            if (uploaded) {
-                fileArchiver.archive(file);
-                System.out.println("[INFO] Uploaded and archived: " + file.getName());
-                success++;
-            } else {
-                System.err.println("[ERROR] Upload failed: " + file.getName());
-                failed++;
+                try {
+                    boolean uploaded = sftpUploader.upload(file);
+                    if (uploaded) {
+                        fileArchiver.archive(file);
+                        System.out.println("[INFO] Uploaded and archived: " + file.getName());
+                        success++;
+                    }
+                } catch (IOException e) {
+                    System.err.println("[ERROR] Upload failed: " + file.getName() + " - " + e.getMessage());
+                    e.printStackTrace();
+                    failed++;
+                }
+            }
+        } finally {
+            if (sftpUploader instanceof JschSftpUploader) {
+                ((JschSftpUploader) sftpUploader).close();
             }
         }
 

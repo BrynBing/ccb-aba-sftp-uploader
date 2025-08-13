@@ -23,9 +23,6 @@ public class ConfigLoader {
         return INSTANCE;
     }
 
-    public String getMountContains() {
-        return getRequired("mount.expect.contains");
-    }
     public String getSageDir() {
         return getRequired("path.sage");
     }
@@ -40,4 +37,16 @@ public class ConfigLoader {
         }
         return v;
     }
+
+    // --- SFTP ---
+    public String getSftpHost() { return getRequired("sftp.host"); }
+    public int getSftpPort() { return Integer.parseInt(getRequired("sftp.port")); }
+    public String getSftpUsername() { return getRequired("sftp.username"); }
+    public String getSftpPrivateKeyPath() { return getRequired("sftp.private.key.path"); }
+
+    public String getSftpPrivateKeyPassphrase() { return properties.getProperty("sftp.private.key.passphrase"); }
+    public String getSftpKnownHostsPath() { return properties.getProperty("sftp.known.hosts.path"); }
+    public String getSftpStrictHostKeyChecking() { return properties.getProperty("sftp.strict.hostkey"); } // "yes"/"no"
+    public String getSftpRemoteDir() { return properties.getProperty("sftp.remote.dir"); }
+
 }
